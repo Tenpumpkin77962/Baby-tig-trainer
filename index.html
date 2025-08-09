@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Stainless TIG Trainer — PWA</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f1720">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+:root{--bg:#0b0f14;--panel:#0f1720;--muted:#9aa6b2;--accent:#1a73e8;--good:#22c55e}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:var(--bg);color:#e6eef6;-webkit-font-smoothing:antialiased}
+.app{display:flex;flex-direction:column;min-height:100%}
+.header{display:flex;align-items:center;gap:12px;padding:12px;background:linear-gradient(90deg,#071022, #0b1720);border-bottom:1px solid rgba(255,255,255,0.02)}
+.header h1{font-size:16px;margin:0}
+.container{display:flex;flex:1;gap:12px;padding:12px}
+.left{flex:1;display:flex;flex-direction:column;gap:10px}
+.canvasWrap{background:#0b0e12;border-radius:12px;padding:8px;display:flex;align-items:center;justify-content:center;min-height:320px}
+canvas{width:100%;height:56vh;border-radius:8px;background:#111;touch-action:none;display:block}
+.toolbar{display:flex;gap:8px;align-items:center}
+.controls{width:320px;max-width:40vw;padding:10px;border-radius:12px;background:linear-gradient(180deg,#081018,#0c1420);border:1px solid rgba(255,255,255,0.02)}
+.controls label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
+input[type=range]{width:100%}
+button{background:var(--accent);color:white;border:none;padding:10px;border-radius:8px;font-weight:600}
+button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+.small{font-size:12px;color:var(--muted)}
+.row{display:flex;gap:8px;align-items:center}
+.meter{height:10px;background:#091017;border-radius:999px;overflow:hidden}
+.meter > i{display:block;height:100%;background:linear-gradient(90deg,#ffd37a,#ffb86b);width:0%}
+.score{background:#071018;padding:8px;border-radius:8px;color:#bfe8d8;font-weight:600;text-align:center}
+.footer{padding:10px;font-size:13px;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,0.02)}
+@media(max-width:920px){.container{flex-direction:column}.controls{width:100%;max-width:100%}.toolbar{flex-wrap:wrap}canvas{height:52vh}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="header">
+    <h1>Stainless TIG Trainer</h1>
+    <div class="small">PWA demo — practice puddle control, travel speed & filler timing</div>
+    <div style="flex:1"></div>
+    <button id="installBtn" class="secondary" style="display:none">Install</button>
+  </div>
+
+  <div class="container">
+    <div class="left">
+      <div class="canvasWrap">
+        <canvas id="c"></canvas>
+      </div>
+      <div class="toolbar">
+        <button id="resetBtn" class="secondary">Reset</button>
+        <button id="finishBtn">Finish & Score</button>
+        <button id="toggleGhost" class="secondary">Ghost</button>
+        <div style="flex:1"></div>
+        <div class="score" id="score">—</div>
+      </div>
+    </div>
+
+    <div class="controls" role="region" aria-label="Controls">
+      <div id="status">Status: <span id="statustext">Idle</span></div>
+      <label>Amperage <span id="ampVal">60A</span></label>
+      <input id="amp" type="range" min="10" max="250" value="60" aria-valuemin="10" aria-valuemax="250">
+      <div style="height:8px"></div>
+      <label>Travel Speed</label>
+      <div class="meter"><i id="speedMeter"></i></div>
+      <div style="height:8px"></div>
+      <div class="row" style="margin-bottom:8px">
+        <button id="fillBtn" style="background:var(--good)">FILL</button>
+        <div class="small">Tap while welding to add filler</div>
+      </div>
+      <label>Weld Position</label>
+      <select id="position" aria-label="Weld position">
+        <option value="flat">Flat</option>
+        <option value="horizontal">Horizontal</option>
+        <option value="vertical">Vertical</option>
+        <option value="overhead">Overhead</option>
+      </select>
+      <div style="height:10px"></div>
+      <div class="small">Tip: Use your finger to simulate torch travel. Keep heat low for stainless to avoid heavy tint.</div>
+    </div>
+  </div>
+
+  <div class="footer small">Add to Home Screen for full PWA behaviour. This is a simulator — practice real TIG under supervision.</div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
